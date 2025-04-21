@@ -15,6 +15,11 @@ public class Utilisateur {
         this.prenom = prenom;
     }
 
+    public Utilisateur(int id_utilisateur) {
+        this.id_utilisateur = id_utilisateur;
+    }
+
+
     //USED FOR INHERITANCE ONLY
     public Utilisateur() {
     }

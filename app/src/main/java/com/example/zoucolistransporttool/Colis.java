@@ -15,6 +15,10 @@ public class Colis {
         this.id_utilisateur = id_utilisateur;
         this.id_utilisateur_1 = id_utilisateur_1;
     }
+
+    public Colis(int id_colis) {
+        this.id_colis = id_colis;
+    }
     public int getId_colis() {
         return id_colis;
     }

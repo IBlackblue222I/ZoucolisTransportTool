@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,7 +30,6 @@ import retrofit2.Response;
 public class DeliveryListActivity extends AppCompatActivity {
     ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
     private RecyclerView recyclerView;
-    private ItemListAdapter itemListAdapter;
 
     Button btnSelectDate;
     private Calendar selectedDate;
@@ -85,22 +85,82 @@ public class DeliveryListActivity extends AppCompatActivity {
 
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-            Call<List<Livraison>> call_L = apiService.getLivraisonsEnCours();
+            Utilisateur transporteur = new Utilisateur(id_transporteur);
+
+            Call<List<Livraison>> call_L = apiService.getLivraisonsEnCours(transporteur);
             call_L.enqueue(new Callback<List<Livraison>>() {
                 @Override
                 public void onResponse(Call<List<Livraison>> call, Response<List<Livraison>> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         List<Livraison> livraisonList = response.body();
+
+                        int totalLivraisons = livraisonList.size();
+                        AtomicInteger completedCalls = new AtomicInteger(0);
+
                         for (Livraison livraison : livraisonList) {
-                            System.out.println(livraison.getId_livraison());
-                            System.out.println(livraison.getDate_prevue());
-                            System.out.println(livraison.getId_utilisateur());
-                            System.out.println(livraison.getId_colis());
+//                            System.out.println(livraison.getId_livraison());
+//                            System.out.println(livraison.getDate_prevue());
+//                            System.out.println(livraison.getId_utilisateur());
+//                            System.out.println(livraison.getId_colis());
+                            Colis livraison_colis = new Colis(livraison.getId_colis());
+                            Call<Colis> call_colis_L = apiService.getUnColis(livraison_colis);
+                            call_colis_L.enqueue(new Callback<Colis>() {
+                                @Override
+                                public void onResponse(Call<Colis> call2, Response<Colis> response2) {
+                                    if(response2.isSuccessful() && response2.body() != null) {
+                                        Colis colis_dta = new Colis(livraison.getId_colis(), response2.body().getDescription(), response2.body().getFragile(), response2.body().getId_utilisateur(), response2.body().getId_utilisateur_1());
+                                        livraison.setColis(colis_dta);
+
+                                        Utilisateur destinataire = new Utilisateur(livraison.getColis().getId_utilisateur());
+                                        Call<Utilisateur> call_dest = apiService.getUnUtilisateur(destinataire);
+
+                                        call_dest.enqueue(new Callback<Utilisateur>() {
+                                            @Override
+                                            public void onResponse(Call<Utilisateur> call3, Response<Utilisateur> response3) {
+                                                if(response3.isSuccessful() && response3.body() != null) {
+                                                    destinataire.setTel(response3.body().getTel());
+                                                    destinataire.setAdresse(response3.body().getAdresse());
+                                                    destinataire.setNom(response3.body().getNom());
+                                                    destinataire.setPrenom(response3.body().getPrenom());
+
+                                                    livraison.setDestinataire(destinataire);
+
+                                                    if (completedCalls.incrementAndGet() == totalLivraisons) {
+                                                        // All colis fetched
+                                                        runOnUiThread(() -> {
+                                                            ItemListAdapter adapter = new ItemListAdapter(livraisonList);
+                                                            recyclerView.setAdapter(adapter);
+                                                        });
+
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<Utilisateur> call, Throwable t) {
+
+                                            }
+                                        });
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<Colis> call, Throwable t) {
+
+                                }
+                            });
+
+
+
+
                         }
 
-                        ItemListAdapter adapter = new ItemListAdapter(livraisonList);
+//                        ItemListAdapter adapter = new ItemListAdapter(livraisonList);
+//
+//                        recyclerView.setAdapter(adapter);
 
-                        recyclerView.setAdapter(adapter);
                     }
                 }
 

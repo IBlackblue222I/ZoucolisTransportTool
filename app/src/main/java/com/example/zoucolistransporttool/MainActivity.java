@@ -96,8 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(Call<Connexion> call, Throwable t) {
-                                Toast.makeText(MainActivity.this, "Something went wrong (connexion): " + t.getMessage(), Toast.LENGTH_LONG).show();
-                            }
+                                                        }
                         });
                     } else {
                         Toast.makeText(MainActivity.this, "Unknown login", Toast.LENGTH_LONG).show();
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<Profil> call, Throwable t) {
-                    Toast.makeText(MainActivity.this, "Something went wrong: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 

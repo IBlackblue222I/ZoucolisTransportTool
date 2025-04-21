@@ -25,7 +25,19 @@ public interface ApiService {
     @POST("transporteur/lire_un.php")
     Call<Transporteur> getUnTransporteur(@Body Transporteur transporteur);
 
-    @GET("livraison/lire_enCours.php")
-    Call<List<Livraison>> getLivraisonsEnCours();
+    @POST("livraison/lire_enCours.php")
+    Call<List<Livraison>> getLivraisonsEnCours(@Body Utilisateur transporteur);
+
+    @POST("livraison/lire_un.php")
+    Call<Livraison> getUneLivraison(@Body Livraison livraison);
+
+    @POST("livraison/modifier.php")
+    Call<Livraison> modifierUneLivraison(@Body Livraison livraison);
+
+    @POST("colis/lire_un.php")
+    Call<Colis> getUnColis(@Body Colis colis);
+
+    @POST("utilisateur/lire_un.php")
+    Call<Utilisateur> getUnUtilisateur(@Body Utilisateur utilisateur);
 }
 

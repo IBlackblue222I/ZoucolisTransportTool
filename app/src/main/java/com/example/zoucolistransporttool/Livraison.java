@@ -11,14 +11,17 @@ public class Livraison {
     private String date_arrivee;
     private int id_utilisateur;
     private int id_colis;
-    private List<Colis> listColis = new ArrayList<>();
+    private Colis colis = null;
+    private Utilisateur destinataire = null;
 
-    public List<Colis> getListColis() {
-        return listColis;
+    private boolean isExpanded = false;
+
+    public boolean isExpanded() {
+        return isExpanded;
     }
 
-    public void setListColis(List<Colis> listColis) {
-        this.listColis = listColis;
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
     }
 
     public Livraison(int id_livraison, int id_colis, int id_utilisateur, String date_arrivee, String date_prevue, String date_depart, int domicile) {
@@ -31,6 +34,10 @@ public class Livraison {
         this.domicile = domicile;
     }
 
+    public Livraison(int id_livraison) {
+        this.id_livraison = id_livraison;
+    }
+
     public Livraison() {
     }
 
@@ -40,6 +47,22 @@ public class Livraison {
 
     public void setId_livraison(int id_livraison) {
         this.id_livraison = id_livraison;
+    }
+
+    public Utilisateur getDestinataire() {
+        return destinataire;
+    }
+
+    public void setDestinataire(Utilisateur destinataire) {
+        this.destinataire = destinataire;
+    }
+
+    public Colis getColis() {
+        return colis;
+    }
+
+    public void setColis(Colis unColis) {
+        this.colis = unColis;
     }
 
     public int getDomicile() {
