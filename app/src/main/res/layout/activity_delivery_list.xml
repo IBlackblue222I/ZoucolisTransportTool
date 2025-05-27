@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
+        android:gravity="left"
         android:padding="8dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,9 +22,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="22sp"
-            android:paddingRight="96dp"
+            android:paddingRight="15dp"
             android:paddingVertical="10dp"
             android:text="ZTT" />
+
+        <Button
+            android:id="@+id/btn_refresh"
+            android:paddingHorizontal="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Refresh list" />
 
         <Button
             android:id="@+id/btn_select_date"
@@ -32,13 +39,12 @@
             android:layout_height="wrap_content"
             android:text="Select Date" />
 
-        <TextView
-            android:id="@+id/tv_selectedDate"
+        <Button
+            android:id="@+id/btn_disconnect"
+            android:paddingHorizontal="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="18dp"
-            android:paddingVertical="10dp"
-            android:text="Date" />
+            android:text="Disconnect" />
     </LinearLayout>
 
     <!-- RecyclerView -->

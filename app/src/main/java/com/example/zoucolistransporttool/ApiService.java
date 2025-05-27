@@ -1,6 +1,7 @@
 package com.example.zoucolistransporttool;
 
 import java.util.List;
+import java.util.Map;
 
 
 import com.example.zoucolistransporttool.Colis;
@@ -26,7 +27,7 @@ public interface ApiService {
     Call<Transporteur> getUnTransporteur(@Body Transporteur transporteur);
 
     @POST("livraison/lire_enCours.php")
-    Call<List<Livraison>> getLivraisonsEnCours(@Body Utilisateur transporteur);
+    Call<List<Livraison>> getLivraisonsEnCours(@Body Map<String, String> dateMap);
 
     @POST("livraison/lire_un.php")
     Call<Livraison> getUneLivraison(@Body Livraison livraison);
@@ -39,5 +40,8 @@ public interface ApiService {
 
     @POST("utilisateur/lire_un.php")
     Call<Utilisateur> getUnUtilisateur(@Body Utilisateur utilisateur);
+
+    @POST("passe/lire_parLivraison.php")
+    Call<List<Passe>> getPointsRelaisdeLivraison(@Body Map<String, Integer> livraison);
 }
 
